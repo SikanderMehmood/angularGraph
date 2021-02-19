@@ -3,6 +3,7 @@ import {DepartData} from '../../../models/DepartData';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {Department} from '../../../models/Department';
+import {DataServiceService} from '../../../services/data-service.service';
 
 @Component({
   selector: 'app-departments',
@@ -13,6 +14,7 @@ export class DepartmentsComponent implements OnInit {
 
   allDepartments: Department[] = [];
   departData: DepartData[] = [];
+
   constructor(private route: ActivatedRoute, private http: HttpClient) {
   }
 
@@ -35,8 +37,8 @@ export class DepartmentsComponent implements OnInit {
     );
   }
 
-   getAllDepartments() {
-    const url = '/api/allDepartments';
+  getAllDepartments() {
+    const url = '/api/get/organizations/';
     this.http.get<Department[]>(url).subscribe(
       res => {
         this.allDepartments = res;

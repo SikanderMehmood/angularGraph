@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 // @ts-ignore
 import {Chart} from 'node_modules/chart.js';
+import {DataServiceService} from '../../../services/data-service.service';
 
 @Component({
   selector: 'app-my-chart',
@@ -9,16 +10,37 @@ import {Chart} from 'node_modules/chart.js';
 })
 export class MyChartComponent implements OnInit {
 
-  constructor() { }
+  title = 'chartapp';
+  selectedDay: number = 1;
+  allDepartments: any[] = [];
+  departData: any[] = [];
+  allDepartmentsasd: any = '';
+  incomingData: any[] = [];
+  outGoingData: any[] = [];
 
-  ngOnInit(){
+  constructor(private dataService: DataServiceService) {
+  }
+
+  ngOnInit() {
+    this.selectChangeHandler(null);
+    this.allDepartments.push({"key": 1, "value": "asdasdasd"});
+    this.allDepartments.push({"key": 2, "value": "asdasdasd"});
+    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
+    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
+    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
+    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
+
+
+    this.incomingData = this.createIncomingData(this.departData);
+    this.outGoingData = this.createOutgoingData(this.departData);
+
     var myChart = new Chart("myChart", {
       type: 'bar',
       data: {
         labels: ['2011', '2012', '2013', '2013', '2014', '2015', '2016'],
         datasets: [{
           label: '# of Votes',
-          data: [20, 20, 10, 10, 10, 10, 20, 5, 10],
+          data: this.incomingData,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -55,7 +77,7 @@ export class MyChartComponent implements OnInit {
         labels: ['2011', '2012', '2013', '2013', '2014', '2015', '2016'],
         datasets: [{
           label: '# of Votes',
-          data: [20, 20, 10, 10, 10, 10, 1000],
+          data: this.outGoingData,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -85,6 +107,36 @@ export class MyChartComponent implements OnInit {
         }
       }
     });
+  }
+
+  selectChangeHandler(event: any) {
+    this.selectedDay = this.allDepartmentsasd;
+    this.departData.push({Year: '2016', Incomingcount: 150, outgoingCount: 72});
+    this.departData.push({Year: '2017', Incomingcount: 150, outgoingCount: 72});
+    this.departData.push({Year: '2018', Incomingcount: 150, outgoingCount: 72});
+    this.departData.push({Year: '2019', Incomingcount: 150, outgoingCount: 72});
+    this.departData.push({Year: '2020', Incomingcount: 150, outgoingCount: 72});
+    this.departData.push({Year: '2021', Incomingcount: 150, outgoingCount: 72});
+    // [] = this.dataService.getItems(this.selectedDay);
+    console.log(this.departData);
+  }
+
+  createIncomingData(departData: any[]) {
+
+    let index = 0;
+    for (index; index < departData.length; ++index) {
+      this.incomingData.push(departData[index].Incomingcount);
+    }
+    return this.incomingData;
+  }
+
+  createOutgoingData(departData: any[]) {
+
+    let index = 0;
+    for (index; index < departData.length; ++index) {
+      this.outGoingData.push(departData[index].outgoingCount);
+    }
+    return this.outGoingData;
   }
 
 }

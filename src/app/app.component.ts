@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Department} from '../models/Department';
+import {DataServiceService} from '../services/data-service.service';
 
 @Component({
   selector: 'app-root',
@@ -10,46 +10,14 @@ export class AppComponent implements OnInit {
   title = 'chartapp';
   selectedDay: number = 1;
   allDepartments: any[] = [];
+  departData: any[] = [];
   allDepartmentsasd: any = '';
+
+  constructor(private dataService: DataServiceService) {
+  }
 
   ngOnInit() {
 
-    this.allDepartments.push({"key": 1, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 2, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 1, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 2, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 1, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 2, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-    this.allDepartments.push({"key": 3, "value": "asdasdasd"});
-
   }
 
-
-  selectChangeHandler(event: any) {
-    this.selectedDay = this.allDepartmentsasd;
-    console.log(this.selectedDay);
-  }
 }

@@ -9,6 +9,11 @@ import {DepartmentsComponent} from './components/departments/departments.compone
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { ChartsModule } from 'ng2-charts';
+import {MatDatepickerModule,} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DatePipe } from '@angular/common'
 
 @NgModule({
   declarations: [
@@ -22,9 +27,13 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ChartsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -3,3 +3,11 @@
   width:400px;
   height: 400px;
 }
+
+
+.aParent div {
+  float: left;
+  clear: none; 
+}
+
+button { cursor: pointer; }

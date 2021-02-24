@@ -1,14 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Chart} from 'node_modules/chart.js';
-import { Department } from 'src/models/Department';
+import {Department} from 'src/models/Department';
 import {DataServiceService} from '../../../services/data-service.service';
 import {HttpClient} from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet } from 'ng2-charts';
-import { DepartmentsComponent } from '../departments/departments.component';
-import { FormControl, FormGroup } from '@angular/forms';
-import { DatePipe } from '@angular/common'
+import {map} from 'rxjs/operators';
+import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
+import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from 'ng2-charts';
+import {DepartmentsComponent} from '../departments/departments.component';
+import {FormControl, FormGroup} from '@angular/forms';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-my-chart',
@@ -26,10 +26,10 @@ export class MyChartComponent implements OnInit {
   incomingData: any[] = [];
   outGoingData: any[] = [];
   years: any[] = [];
-  barChatIncomingData : any[] = [];
-  barChatOutgoingData : any[] = [];
+  barChatIncomingData: any[] = [];
+  barChatOutgoingData: any[] = [];
   barYearData: any[] = [];
-  maximumRange:number = 0;
+  maximumRange: number = 0;
 
   range = new FormGroup({
     start: new FormControl(),
@@ -44,41 +44,37 @@ export class MyChartComponent implements OnInit {
   // }
 
   public barChartOptions: any = {
-    scales : {
+    scales: {
       yAxes: [{
-          ticks: {
+        ticks: {
           beginAtZero: true,
-              stepValue: 10,
-              steps: 20,
-            max : 1000,
-          }
+          stepValue: 10,
+          steps: 20,
+          max: 1000,
+        }
       }]
     }
-    
+
   };
 
 
-  public barChartLabels: Label[]=[];
+  public barChartLabels: Label[] = [];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
 
   public barChartData: ChartDataSets[] = [
-    { data: this.incomingData, label: '# of Incoming Registers' },
-    { data: this.outGoingData, label: '# of Outgoing Registers' }
+    {data: this.incomingData, label: '# of Incoming Registers'},
+    {data: this.outGoingData, label: '# of Outgoing Registers'}
   ];
 
 
-
-
-  constructor(private dataService: DataServiceService,private http:HttpClient,public datepipe: DatePipe) {
-
+  constructor(private dataService: DataServiceService, private http: HttpClient, public datepipe: DatePipe) {
 
 
   }
 
   ngOnInit() {
-    //--------------
     this.setChartsData();
     const url = 'http://127.0.0.1:8000/get/organizations/';
     this.http.get<any>(url).subscribe(
@@ -91,14 +87,9 @@ export class MyChartComponent implements OnInit {
         alert('some error occoured while getting departments');
       }
     );
-
-    
   }
 
 
-
-
-  
   createIncomingData(departData: any[]) {
 
     let index = 0;
@@ -115,7 +106,7 @@ export class MyChartComponent implements OnInit {
     for (index; index < departData.length; ++index) {
       this.outGoingData.push(departData[index]['outgoingCount']);
     }
-    
+
     return this.outGoingData;
   }
 
@@ -137,7 +128,7 @@ export class MyChartComponent implements OnInit {
     if (outgoingNumber < incomingNumber) {
       this.maximumRange = incomingNumber;
     }
-    else{
+    else {
       this.maximumRange = outgoingNumber;
     }
 
@@ -150,31 +141,31 @@ export class MyChartComponent implements OnInit {
     this.barChatIncomingData = [];
     this.barChatOutgoingData = [];
     this.years = [];
-    let startDate =this.datepipe.transform(this.range.value['start'], 'yyyy-MM-dd');
-    let endDate =this.datepipe.transform(this.range.value['end'], 'yyyy-MM-dd');
+    let startDate = this.datepipe.transform(this.range.value['start'], 'yyyy-MM-dd');
+    let endDate = this.datepipe.transform(this.range.value['end'], 'yyyy-MM-dd');
     let url = 'http://127.0.0.1:8000/get/dairy/inout/' + this.departmentId + '/' + startDate + '/' + endDate;
     this.http.get<any>(url).subscribe(
       res => {
-        if(res['organizationInOutListCount']!= null){
-         this.departData = res['organizationInOutListCount'];
-        console.log(this.departData);
-        this.incomingData = this.createIncomingData(this.departData);
-        this.outGoingData = this.createOutgoingData(this.departData);
-        this.getMaximumRangeNumber();
-        this.years = this.createYears(this.departData);
-        this.barChatIncomingData = this.incomingData;
-        this.barChatOutgoingData = this.outGoingData;
-        this.barYearData  = this.years;
-        //this.myfunction();
-        this.barChartLabels=this.years;
-        this.setChartsData();
+        if (res['organizationInOutListCount'] != null) {
+          this.departData = res['organizationInOutListCount'];
+          console.log(this.departData);
+          this.incomingData = this.createIncomingData(this.departData);
+          this.outGoingData = this.createOutgoingData(this.departData);
+          this.getMaximumRangeNumber();
+          this.years = this.createYears(this.departData);
+          this.barChatIncomingData = this.incomingData;
+          this.barChatOutgoingData = this.outGoingData;
+          this.barYearData = this.years;
+          //this.myfunction();
+          this.barChartLabels = this.years;
+          this.setChartsData();
         }
-        else{
+        else {
           this.incomingData = [];
           this.outGoingData = [];
           this.setChartsData();
 
-          alert("No Register exists in selected Time Period for the organization.")
+          alert('No Register exists in selected Time Period for the organization.')
 
         }
       },
@@ -184,13 +175,10 @@ export class MyChartComponent implements OnInit {
     );
 
 
-
   }
 
 
-
-
-  setChartsData(){
+  setChartsData() {
 
     var myChart = new Chart("myChart", {
       type: 'bar',
@@ -204,7 +192,7 @@ export class MyChartComponent implements OnInit {
             'rgba(255, 99, 132, 0.2)',
             'rgba(255, 99, 132, 0.2)',
             'rgba(255, 99, 132, 0.2)'
-            
+
           ],
           borderColor: [
             'rgba(255, 99, 132, 1)',
@@ -222,7 +210,7 @@ export class MyChartComponent implements OnInit {
           yAxes: [{
             ticks: {
               beginAtZero: true,
-              max : this.maximumRange,
+              max: this.maximumRange,
             }
           }]
         }
@@ -232,7 +220,7 @@ export class MyChartComponent implements OnInit {
     var myChart = new Chart("myChart2", {
       type: 'bar',
       data: {
-        labels:this.years,
+        labels: this.years,
         datasets: [{
           label: '# of Outgoing Registers',
           data: this.outGoingData,
@@ -260,7 +248,7 @@ export class MyChartComponent implements OnInit {
           yAxes: [{
             ticks: {
               beginAtZero: true,
-              max : this.maximumRange,
+              max: this.maximumRange,
             }
           }]
         }

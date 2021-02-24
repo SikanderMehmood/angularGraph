@@ -318,7 +318,7 @@
 
 <div class="content" role="main">
 
-<!--   
+<!--
   <div class="card highlight-card card-small">
  Highlight Card
     <svg id="rocket" alt="Rocket Ship" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678"
@@ -335,10 +335,10 @@
                 transform="translate(0 0.005)" fill="#fff"/>
         </g>
       </g>
-    </svg> 
+    </svg>
 
      <span>{{ title }} app is running!</span> -->
-<!-- 
+<!--
     <svg id="rocket-smoke" alt="Rocket Ship Smoke" xmlns="http://www.w3.org/2000/svg" width="516.119" height="1083.632"
          viewBox="0 0 516.119 1083.632">
       <path id="Path_40" data-name="Path 40"
@@ -365,6 +365,42 @@
 
 </div>
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+
+
+<dx-chart id="chart"
+          [class]="isFirstLevel?'pointer-on-bars':''"
+          [dataSource]="dataSource"
+          (onPointClick)="onPointClick($event)"
+          title="The Most Populated Countries by Continents"
+          [customizePoint]="customizePoint">
+  <dxi-series type="bar"></dxi-series>
+  <dxo-legend [visible]="false"></dxo-legend>
+  <dxi-value-axis [showZero]="false"></dxi-value-axis>
+</dx-chart>
+<dx-button class="button-container"
+           text="Back"
+           icon="chevronleft"
+           [visible]="!isFirstLevel"
+           (onClick)="onButtonClick()">
+</dx-button>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->

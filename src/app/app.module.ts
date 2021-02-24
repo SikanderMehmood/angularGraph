@@ -13,7 +13,9 @@ import { ChartsModule } from 'ng2-charts';
 import {MatDatepickerModule,} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
+import {DxButtonModule, DxChartModule} from 'devextreme-angular';
+import {Service} from '../services/dataitem.service';
 
 @NgModule({
   declarations: [
@@ -31,9 +33,13 @@ import { DatePipe } from '@angular/common'
     ChartsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    BrowserModule,
+    DxChartModule,
+    DxButtonModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, Service],
   bootstrap: [AppComponent]
 })
 export class AppModule {

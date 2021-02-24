@@ -20,7 +20,7 @@ export class AppComponent {
   isFirstLevel: boolean;
 
   constructor(private dataService: DataServiceService, service: Service, element: ElementRef) {
-    this.dataSource = service.filterData('');
+    this.dataSource = service.getAllDepartments();
     this.colors = service.getColors();
     this.service = service;
     this.isFirstLevel = true;
@@ -29,14 +29,14 @@ export class AppComponent {
   onButtonClick() {
     if (!this.isFirstLevel) {
       this.isFirstLevel = true;
-      this.dataSource = this.service.filterData('');
+      this.dataSource = this.service.getAllDepartments();
     }
   }
 
   onPointClick(e: any) {
     if (this.isFirstLevel) {
       this.isFirstLevel = false;
-      this.dataSource = this.service.filterData(e.target.originalArgument);
+      this.dataSource = this.service.getoneYearDataForOneDepartment(e.target.originalArgument, this.allDepartmentsasd);
     }
   }
 

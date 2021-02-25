@@ -12,14 +12,22 @@ export class DataItem {
 }
 
 
-let newData: DataItem[] = [
-  {arg: '2019', val: 123, parentID: ''},
-  {arg: '2020', val: 12, parentID: ''},
-  {arg: '2021', val: 13, parentID: ''},
-  {arg: '2022', val: 14, parentID: ''},
-  {arg: '2023', val: 15, parentID: ''},
-  // {arg: 'Nigeria', val: 12, parentID: 'Africa'},
+let incomingData: DataItem[] = [
+  // {arg: '2019', val: 123, parentID: ''},
+  // {arg: '2020', val: 12, parentID: ''},
+  // {arg: '2021', val: 13, parentID: ''},
+  // {arg: '2022', val: 14, parentID: ''},
+  // {arg: '2023', val: 15, parentID: ''},
 ];
+
+let outgoingData: DataItem[] = [
+  // {arg: '2019', val: 123, parentID: ''},
+  // {arg: '2020', val: 12, parentID: ''},
+  // {arg: '2021', val: 13, parentID: ''},
+  // {arg: '2022', val: 14, parentID: ''},
+  // {arg: '2023', val: 15, parentID: ''},
+];
+
 
 let oneData: DataItem[] = [
 
@@ -37,31 +45,78 @@ const colors: string[] = ['#6babac', '#e55253'];
 @Injectable()
 export class Service {
 
+  second = [
+    {Label: '2019', Incomingcount: 11, outgoingCount: 14}
+  ];
+
   constructor(private http: HttpClient) {
   }
 
-  filterData(name: any): DataItem[] {
-    return newData.filter((item) => {
-      return item.parentID === name;
+  disableClick: any = true;
+
+  getDisableClickValue(): boolean {
+    return this.disableClick;
+  }
+
+  myarray: any[] = [];
+
+
+  getYearsOutgoingData(): any {
+    this.second.forEach((obj, index) => {
+      outgoingData.push({'arg': obj.Label, 'val': obj.outgoingCount, 'parentID': ''});
     });
   }
 
-  getAllDepartments(): DataItem[] {
-    const url = 'http://127.0.0.1:8000/get/organizations/';
+  getYearsIncomingData(): any {
+    this.second.forEach((obj, index) => {
+      incomingData.push({'arg': obj.Label, 'val': obj.Incomingcount, 'parentID': ''});
+    });
+  }
+
+  // getMonthsIncomingData(): DataItem[] {
+  //
+  // }
+  //
+  // getMonthsOutGoingData(): DataItem[] {
+  //
+  // }
+
+  getAllIncomingData(): DataItem[] {
+    const url = 'http://127.0.0.1:8000/get/yearsData/';
     this.http.get<any>(url).subscribe(
       res => {
-        newData = res;
+        incomingData = res;
         return res;
 
       },
       error => {
-        alert('some error occoured while getting departments');
+        alert('some error while getting years data');
+        this.getYearsIncomingData();
+        if (incomingData[0].arg.length < 4) {
+          this.disableClick = false;
+        }
       }
     );
-    return newData;
+    return incomingData;
   }
 
-  getoneYearDataForOneDepartment(department: any, year: any): DataItem[] {
+  getAllOutGoingData(): DataItem[] {
+    const url = 'http://127.0.0.1:8000/get/yearsData/';
+    this.http.get<any>(url).subscribe(
+      res => {
+        incomingData = res;
+        return res;
+
+      },
+      error => {
+        alert('some error while getting years data');
+        this.getYearsOutgoingData();
+      }
+    );
+    return outgoingData;
+  }
+
+  getoneYearDataIncomingForOneDepartment(department: any, year: any): DataItem[] {
     const url = '/api/get/dairy/inout/' + department + year;
     this.http.get<any>(url).subscribe(
       res => {
@@ -70,10 +125,27 @@ export class Service {
 
       },
       error => {
-       // alert('some error occoured while getting departments');
+        // alert('some error occoured while getting departments');
+        this.getYearsIncomingData();
       }
     );
-    return oneData;
+    return incomingData;
+  }
+
+  getoneYearDataOutgoingForOneDepartment(department: any, year: any): DataItem[] {
+    const url = '/api/get/dairy/inout/' + department + year;
+    this.http.get<any>(url).subscribe(
+      res => {
+        oneData = res;
+        return res;
+
+      },
+      error => {
+        // alert('some error occoured while getting departments');
+        this.getYearsOutgoingData();
+      }
+    );
+    return outgoingData;
   }
 
 

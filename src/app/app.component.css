@@ -18,3 +18,12 @@
   left: 0px;
 }
 
+
+
+.aParent div {
+  float: left;
+  clear: none;
+}
+
+button { cursor: pointer; }
+

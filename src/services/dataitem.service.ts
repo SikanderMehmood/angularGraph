@@ -13,41 +13,24 @@ export class DataItem {
 
 
 let newData: DataItem[] = [
-  {arg: '123123', val: 100, parentID: ''},
-  {arg: 'North America', val: 12, parentID: ''},
-  {arg: 'Europe', val: 12, parentID: ''},
-  {arg: 'Africa', val: 12, parentID: ''},
-  {arg: 'South America', val: 12, parentID: ''},
+  {arg: '2019', val: 123, parentID: ''},
+  {arg: '2020', val: 12, parentID: ''},
+  {arg: '2021', val: 13, parentID: ''},
+  {arg: '2022', val: 14, parentID: ''},
+  {arg: '2023', val: 15, parentID: ''},
   // {arg: 'Nigeria', val: 12, parentID: 'Africa'},
-  // {arg: 'Egypt', val: 12, parentID: 'Africa'},
-  // {arg: 'Congo', val: 22, parentID: 'Africa'},
-  // {arg: 'Morocco', val: 22, parentID: 'Africa'},
-  // {arg: 'China', val: 12, parentID: 'Asia'},
-  // {arg: 'India', val: 12, parentID: 'Asia'},
-  // {arg: 'Pakistan', val: 12, parentID: 'Asia'},
-  // {arg: 'Japan', val: 12, parentID: 'Asia'},
-  // {arg: 'Russia', val: 13, parentID: 'Europe'},
-  // {arg: 'Germany', val: 12, parentID: 'Europe'},
-  // {arg: 'Turkey', val: 12, parentID: 'Europe'},
-  // {arg: 'France', val: 12, parentID: 'Europe'},
-  // {arg: 'United Kingdom', val: 12, parentID: 'Europe'},
-  // {arg: 'United States', val: 12, parentID: 'North America'},
-  // {arg: 'Mexico', val: 12, parentID: 'North America'},
-  // {arg: 'Canada', val: 12, parentID: 'North America'},
-  // {arg: 'Cuba', val: 12, parentID: 'North America'},
-  // {arg: 'Brazil', val: 12, parentID: 'South America'},
-  // {arg: 'Colombia', val: 12, parentID: 'South America'},
-  // {arg: 'Venezuela', val: 12, parentID: 'South America'},
-  // {arg: 'Peru', val: 12, parentID: 'South America'},
-  // {arg: 'Chile', val: 12, parentID: 'South America'}
 ];
 
 let oneData: DataItem[] = [
 
-  {arg: 'Nigeria', val: 12, parentID: 'Africa'},
-  {arg: 'Egypt', val: 12, parentID: 'Africa'},
-  {arg: 'Congo', val: 22, parentID: 'Africa'},
-  {arg: 'Morocco', val: 22, parentID: 'Africa'},
+  {arg: 'January', val: 10, parentID: '123123'},
+  {arg: 'Feb', val: 11, parentID: '123123'},
+  {arg: 'March', val: 12, parentID: '123123'},
+  {arg: 'April', val: 13, parentID: '123123'},
+  {arg: 'May', val: 14, parentID: '123123'},
+  {arg: 'June', val: 15, parentID: '123123'},
+  {arg: 'July', val: 16, parentID: '123123'},
+  {arg: 'August', val: 17, parentID: '123123'},
 ];
 const colors: string[] = ['#6babac', '#e55253'];
 
@@ -87,7 +70,7 @@ export class Service {
 
       },
       error => {
-        alert('some error occoured while getting departments');
+       // alert('some error occoured while getting departments');
       }
     );
     return oneData;

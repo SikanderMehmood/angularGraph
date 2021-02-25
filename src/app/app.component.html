@@ -372,6 +372,13 @@
 <br>
 <br>
 <br>
+
+<div style="margin-right: 5%;">
+  <select  [(ngModel)]="departmentId"
+           style="background-color:rgb(226, 234, 236);width: 300px;height: 50px;overflow-y: scroll;">
+    <option *ngFor="let person of allDepartments" [ngValue]="person.key">{{person.value}}</option>
+  </select>
+</div>
 <br>
 <br><br>
 <br>
@@ -381,12 +388,26 @@
           [class]="isFirstLevel?'pointer-on-bars':''"
           [dataSource]="dataSource"
           (onPointClick)="onPointClick($event)"
-          title="The Most Populated Countries by Continents"
+          title="Incoming diaries"
           [customizePoint]="customizePoint">
   <dxi-series type="bar"></dxi-series>
   <dxo-legend [visible]="false"></dxo-legend>
   <dxi-value-axis [showZero]="false"></dxi-value-axis>
 </dx-chart>
+<br>
+<br><br>
+<br>
+<dx-chart id="chart1"
+          [class]="isFirstLevel?'pointer-on-bars':''"
+          [dataSource]="dataSource"
+          (onPointClick)="onPointClick($event)"
+          title="Outgoing Diaries"
+          [customizePoint]="customizePoint">
+  <dxi-series type="bar"></dxi-series>
+  <dxo-legend [visible]="false"></dxo-legend>
+  <dxi-value-axis [showZero]="false"></dxi-value-axis>
+</dx-chart>
+
 <dx-button class="button-container"
            text="Back"
            icon="chevronleft"

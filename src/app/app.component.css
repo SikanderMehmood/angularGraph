@@ -1,15 +1,20 @@
 #chart {
   height: 440px;
   width: 100%;
+  
 }
 #chart1 {
   height: 440px;
   width: 100%;
+  
 }
 ::ng-deep #chart.pointer-on-bars .dxc-series rect {
   cursor: pointer;
 }
 
+::ng-deep #chart1.pointer-on-bars .dxc-series rect {
+  cursor: pointer;
+}
 .button-container {
   text-align: center;
   height: 40px;

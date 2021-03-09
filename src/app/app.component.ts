@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
   barChatOutgoingData: any[] = [];
   barYearData: any[] = [];
   maximumRange: number = 0;
-  disableClick: any = true;
+  // disableClick: any = true;
 
   constructor(private dataService: DataServiceService, service: Service, element: ElementRef, private http: HttpClient, public datepipe: DatePipe) {
     this.dataSource = [];
@@ -51,19 +51,19 @@ export class AppComponent implements OnInit {
     {key: 4, value: 'Developement'},
   ];
 
-  second: any = [
-    {Label: '10', Incomingcount: 11, outgoingCount: 9},
-    {Label: '11', Incomingcount: 12, outgoingCount: 12},
-    {Label: '12', Incomingcount: 13, outgoingCount: 13},
-    {Label: '13', Incomingcount: 14, outgoingCount: 14},
-  ];
+  // second: any = [
+  //   {Label: '10', Incomingcount: 11, outgoingCount: 9},
+  //   {Label: '11', Incomingcount: 12, outgoingCount: 12},
+  //   {Label: '12', Incomingcount: 13, outgoingCount: 13},
+  //   {Label: '13', Incomingcount: 14, outgoingCount: 14},
+  // ];
 
   ngOnInit() {
     const url = 'http://127.0.0.1:8000/get/organizations/';
     this.http.get<any>(url).subscribe(
       res => {
-        this.allDepartments = res;
-        console.log(this.allDepartments);
+        this.allDepartments = res['organization'];
+       // console.log(this.allDepartments);
       },
       error => {
         this.allDepartments = this.arrsdas;
@@ -79,12 +79,32 @@ export class AppComponent implements OnInit {
     }
   }
 
+  createIncomingData(departData: any[]) {
+    this.incomingData = []
+    let index = 0;
+    for (index; index < departData.length; ++index) {
+      this.incomingData.push(departData[index]['Incomingcount']);
+    }
+
+    return this.incomingData;
+  }
+
+  createOutgoingData(departData: any[]) {
+    this.outGoingData = []
+    let index = 0;
+    for (index; index < departData.length; ++index) {
+      this.outGoingData.push(departData[index]['outgoingCount']);
+    }
+  }
+
   onPointClick(e: any) {
-    if (this.service.getDisableClickValue()) {
+    if (this.getDisableClickValue()) {
       if (this.isFirstLevel) {
         this.isFirstLevel = false;
-        this.dataSource = this.service.getoneYearDataIncomingForOneDepartment(e.target.originalArgument, this.departmentId);
-        this.dataSource2 = this.service.getoneYearDataOutgoingForOneDepartment(e.target.originalArgument, this.departmentId);
+        this.dataSource = [];
+        this.dataSource2 = [];
+        this.getoneYearDataIncomingForOneDepartment(e.target.originalArgument, this.departmentId);
+       // this.getoneYearDataOutgoingForOneDepartment(e.target.originalArgument, this.departmentId);
       }
     }
     else {
@@ -108,25 +128,6 @@ export class AppComponent implements OnInit {
     return pointSettings;
   }
 
-  createIncomingData(departData: any[]) {
-
-    let index = 0;
-    for (index; index < departData.length; ++index) {
-      this.incomingData.push(departData[index]['Incomingcount']);
-    }
-
-    return this.incomingData;
-  }
-
-  createOutgoingData(departData: any[]) {
-
-    let index = 0;
-    for (index; index < departData.length; ++index) {
-      this.outGoingData.push(departData[index]['outgoingCount']);
-    }
-
-    return this.outGoingData;
-  }
 
   createYears(departData: any[]) {
 
@@ -139,43 +140,168 @@ export class AppComponent implements OnInit {
   }
 
   selectChangeHandler() {
-    this.departData = [];
-    this.incomingData = [];
-    this.outGoingData = [];
-    this.barChatIncomingData = [];
-    this.barChatOutgoingData = [];
-    this.years = [];
+    this.dataSource = [];
+    this.dataSource2 = [];
     let startDate = this.datepipe.transform(this.range.value['start'], 'yyyy-MM-dd');
     let endDate = this.datepipe.transform(this.range.value['end'], 'yyyy-MM-dd');
-    let url = 'http://127.0.0.1:8000/get/dairy/inout/' + this.departmentId + '/' + startDate + '/' + endDate;
-    this.http.get<any>(url).subscribe(
-      res => {
-        if (res['organizationInOutListCount'] != null) {
-          this.departData = res['organizationInOutListCount'];
-          console.log(this.departData);
-          this.incomingData = this.createIncomingData(this.departData);
-          this.outGoingData = this.createOutgoingData(this.departData);
-          this.years = this.createYears(this.departData);
-          this.barChatIncomingData = this.incomingData;
-          this.barChatOutgoingData = this.outGoingData;
-          this.barYearData = this.years;
-        }
-        else {
-          this.incomingData = [];
-          this.outGoingData = [];
+    this.colors = this.service.getColors();
+    this.getAllIncomingData(this.departmentId, startDate, endDate);
+    //this.getAllOutGoingData(this.departmentId, startDate, endDate);
+     
+  }
 
-          alert('No Register exists in selected Time Period for the organization.');
+  //  incomingData//: DataItem[] = [];
+  
+  // outgoingData: DataItem[] = [];
 
-        }
-      },
-      error => {
-        this.departData = this.second;
-        this.colors = this.service.getColors();
-        this.dataSource = this.service.getAllIncomingData();
-        this.dataSource2 = this.service.getAllOutGoingData();
-      }
-    );
+  second:any= [];
+  third = [];
 
+  disableClick: any = true;
+
+  getDisableClickValue(): boolean {
+    return this.disableClick;
+  }
+
+  myarray: any[] = [];
+
+
+  getYearsOutgoingData(): any {
+    this.dataSource2 = []
+    this.second.forEach((obj, index) => {
+      this.dataSource2.push({'arg': obj['Label'], 'val': obj['outgoingCount'], 'parentID': ''});
+    });
+  }
+
+  getYearsIncomingData(): any {
+    this.dataSource = [];
+    this.second.forEach((obj, index) => {
+      this.dataSource.push({'arg': obj['Label'], 'val': obj['Incomingcount'], 'parentID': ''});
+    });
+  }
+
+  getMaximumRangeNumber() {
+
+    let outgoingNumber = Math.max(...this.outGoingData);
+    let incomingNumber = Math.max(...this.incomingData);
+
+    if (outgoingNumber < incomingNumber) {
+      this.maximumRange = incomingNumber;
+    }
+    else{
+      this.maximumRange = outgoingNumber;
+    }
 
   }
+
+  // getMonthsIncomingData(): DataItem[] {
+  //
+  // }
+  //
+  // getMonthsOutGoingData(): DataItem[] {
+  //
+  // }
+
+  getAllIncomingData(departmentId,startDate,endDate) {
+    const url  = 'http://127.0.0.1:8000/get/dairy/inout/' + departmentId + '/' + startDate + '/' + endDate;
+    this.http.get<any>(url).subscribe(
+      res => {
+        this.second = [];
+        if(res['organizationInOutListCount']!= null){
+        this.second = res['organizationInOutListCount'];
+        this.createIncomingData(this.second);
+        this.createOutgoingData(this.second);
+        this.getYearsIncomingData();
+        this.getYearsOutgoingData();
+        this.getMaximumRangeNumber();
+        if (this.dataSource[0].arg.indexOf('0')==-1) {
+          this.disableClick = false;
+        }
+      }    else{
+        alert("No Register exists in selected Time Period for the organization.")
+      }
+
+      },
+      error => {
+        alert('some error while getting years data');
+      }
+    );
+  }
+
+  // getAllOutGoingData(departmentId,startDate,endDate){
+  //   const url  = 'http://127.0.0.1:8000/get/dairy/inout/' + departmentId + '/' + startDate + '/' + endDate;
+  //   this.http.get<any>(url).subscribe(
+  //     res => {
+  //       this.third = [];
+  //       if(res['organizationInOutListCount']!= null){
+  //       this.third = res['organizationInOutListCount'];
+        
+        
+        
+        
+  //       }
+  //       else{
+  //         alert("No Register exists in selected Time Period for the organization.")
+  //       }
+
+  //     },
+  //     error => {
+  //       alert('some error while getting years data');
+  //      // this.getYearsOutgoingData();
+  //     }
+  //   );
+  // }
+
+  getoneYearDataIncomingForOneDepartment( year: any,departmentId: any) {
+    const url = 'http://127.0.0.1:8000/get/dairy/months/inout/' + departmentId + '/' + year;
+    this.http.get<any>(url).subscribe(
+      res => {
+        this.second = [];
+        if(res['organizationInOutMonthData']!= null){
+        this.second = res['organizationInOutMonthData'];
+        this.getYearsIncomingData();
+        this.getYearsOutgoingData();
+        this.createIncomingData(this.second);
+        this.createOutgoingData(this.second);
+        this.getMaximumRangeNumber();
+        if (this.dataSource[0].arg.indexOf('0')==-1) {
+          this.disableClick = false;
+        }
+      }
+      else{
+        alert("No Register exists in selected Time Period for the organization.")
+      }
+      },
+      error => {
+        alert('some error occoured while getting departments');
+        //this.getYearsIncomingData();
+      }
+    );
+  }
+
+  // getoneYearDataOutgoingForOneDepartment(year: any,departmentId: any){
+  //   const url = 'http://127.0.0.1:8000/get/dairy/months/inout/' + departmentId + '/' + year;
+  //   this.http.get<any>(url).subscribe(
+  //     res => {
+  //       this.third = [];
+  //       if(res['organizationInOutMonthData']!= null){
+  //       this.third = res['organizationInOutMonthData'];
+  //       this.getYearsOutgoingData();
+  //       this.createOutgoingData(this.second);
+  //       this.getMaximumRangeNumber();
+        
+        
+  //       }
+  //       else{
+  //         alert("No Register exists in selected Time Period for the organization.")
+  //       }
+        
+  //     },
+  //     error => {
+  //       // alert('some error occoured while getting departments');
+        
+  //     }
+  //   );
+  // }
+
 }

@@ -32,3 +32,20 @@
 
 button { cursor: pointer; }
 
+.selectElement{
+  background-color: rgb(155, 45, 60);
+
+}
+
+.selectClass{
+background-color: aqua;
+}
+
+.optionsClass{
+  background-color: rgb(88, 206, 200);
+  padding:15px !important;
+  font-size: 15px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  border-bottom: 1px solid rebeccapurple !important;
+  
+}

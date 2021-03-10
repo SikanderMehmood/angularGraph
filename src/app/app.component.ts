@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   colors: string[];
   service: Service;
   isFirstLevel: boolean;
+  level:any;
+  currentYear:any;
   range = new FormGroup({
     start: new FormControl(),
     end: new FormControl()
@@ -34,6 +36,7 @@ export class AppComponent implements OnInit {
   barChatOutgoingData: any[] = [];
   barYearData: any[] = [];
   maximumRange: number = 0;
+  yearForMonthData:any=0;
   // disableClick: any = true;
 
   constructor(private dataService: DataServiceService, service: Service, element: ElementRef, private http: HttpClient, public datepipe: DatePipe) {
@@ -98,19 +101,32 @@ export class AppComponent implements OnInit {
   }
 
   onPointClick(e: any) {
-    if (this.getDisableClickValue()) {
+
       if (this.isFirstLevel) {
+        this.level="two";
+        this.currentYear=e.target.originalArgument;
         this.isFirstLevel = false;
         this.dataSource = [];
         this.dataSource2 = [];
         this.getoneYearDataIncomingForOneDepartment(e.target.originalArgument, this.departmentId);
-       // this.getoneYearDataOutgoingForOneDepartment(e.target.originalArgument, this.departmentId);
       }
+    else if(e.target.originalArgument.length>2) {
+
+      let startDate = this.datepipe.transform(this.range.value['start'], 'yyyy');
+      let endDate = this.datepipe.transform(this.range.value['end'], 'yyyy');
+      if(startDate==endDate){
+        this.yearForMonthData=startDate;
+      }
+      else{
+        this.yearForMonthData=this.currentYear;
+      }
+      this.getOneMonthData(e.target.originalArgument,this.departmentId,this.yearForMonthData);
     }
-    else {
-      alert('No more data exist');
+    else{
+      alert("No more data exist");
     }
   }
+
 
   customizePoint = () => {
     let pointSettings: any;
@@ -150,9 +166,6 @@ export class AppComponent implements OnInit {
      
   }
 
-  //  incomingData//: DataItem[] = [];
-  
-  // outgoingData: DataItem[] = [];
 
   second:any= [];
   third = [];
@@ -194,13 +207,7 @@ export class AppComponent implements OnInit {
 
   }
 
-  // getMonthsIncomingData(): DataItem[] {
-  //
-  // }
-  //
-  // getMonthsOutGoingData(): DataItem[] {
-  //
-  // }
+
 
   getAllIncomingData(departmentId,startDate,endDate) {
     const url  = 'http://127.0.0.1:8000/get/dairy/inout/' + departmentId + '/' + startDate + '/' + endDate;
@@ -228,30 +235,6 @@ export class AppComponent implements OnInit {
     );
   }
 
-  // getAllOutGoingData(departmentId,startDate,endDate){
-  //   const url  = 'http://127.0.0.1:8000/get/dairy/inout/' + departmentId + '/' + startDate + '/' + endDate;
-  //   this.http.get<any>(url).subscribe(
-  //     res => {
-  //       this.third = [];
-  //       if(res['organizationInOutListCount']!= null){
-  //       this.third = res['organizationInOutListCount'];
-        
-        
-        
-        
-  //       }
-  //       else{
-  //         alert("No Register exists in selected Time Period for the organization.")
-  //       }
-
-  //     },
-  //     error => {
-  //       alert('some error while getting years data');
-  //      // this.getYearsOutgoingData();
-  //     }
-  //   );
-  // }
-
   getoneYearDataIncomingForOneDepartment( year: any,departmentId: any) {
     const url = 'http://127.0.0.1:8000/get/dairy/months/inout/' + departmentId + '/' + year;
     this.http.get<any>(url).subscribe(
@@ -274,34 +257,34 @@ export class AppComponent implements OnInit {
       },
       error => {
         alert('some error occoured while getting departments');
-        //this.getYearsIncomingData();
       }
     );
   }
 
-  // getoneYearDataOutgoingForOneDepartment(year: any,departmentId: any){
-  //   const url = 'http://127.0.0.1:8000/get/dairy/months/inout/' + departmentId + '/' + year;
-  //   this.http.get<any>(url).subscribe(
-  //     res => {
-  //       this.third = [];
-  //       if(res['organizationInOutMonthData']!= null){
-  //       this.third = res['organizationInOutMonthData'];
-  //       this.getYearsOutgoingData();
-  //       this.createOutgoingData(this.second);
-  //       this.getMaximumRangeNumber();
-        
-        
-  //       }
-  //       else{
-  //         alert("No Register exists in selected Time Period for the organization.")
-  //       }
-        
-  //     },
-  //     error => {
-  //       // alert('some error occoured while getting departments');
-        
-  //     }
-  //   );
-  // }
+  getOneMonthData(originalArgument: any, departmentId: any, year: any) {
+    const url = 'http://127.0.0.1:8000/get/dairy/dates/inout/' + departmentId + '/' + year + '/' + originalArgument;
+    this.http.get<any>(url).subscribe(
+      res => {
+        this.second = [];
+        if(res['organizationInOutDayData']!= null){
+        this.second = res['organizationInOutDayData'];
+        this.getYearsIncomingData();
+        this.getYearsOutgoingData();
+        this.createIncomingData(this.second);
+        this.createOutgoingData(this.second);
+        this.getMaximumRangeNumber();
+        if (this.dataSource[0].arg.indexOf('0')==-1) {
+          this.disableClick = false;
+        }
+      }
+      else{
+        alert("No Register exists in selected Time Period for the organization.")
+      }
+      },
+      error => {
+        alert('some error occoured while getting departments');
+      }
+    );
+  }
 
 }

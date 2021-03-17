@@ -328,6 +328,12 @@
     <option class="optionsClass" style="width: max-content;padding:15px;border-color: orange;" *ngFor="let person of allDepartments" [ngValue]="person.key">{{person.value}}</option>
   </select>
 </div>
+<div class="selectClass" style="margin-right: 5%;">
+  <select  [(ngModel)]="departmentId" class="selectElement"
+           style="background-color:rgb(226, 234, 236);width: 300px;height: 50px;overflow-y: scroll;">
+    <option class="optionsClass" style="width: max-content;padding:15px;border-color: orange;" *ngFor="let person of allDepartments" [ngValue]="person.key">{{person.value}}</option>
+  </select>
+</div>
 
 
 <div>
@@ -368,6 +374,16 @@
   [visualRange]="[0, maximumRange]"
   [customPosition]="0">
 </dxi-value-axis>
+<dxo-tooltip
+        [enabled]="true"
+        contentTemplate="content">
+    </dxo-tooltip>
+    <div *dxTemplate="let info of 'content'" class='state-tooltip'>
+      <h4 class='state'>Tooltip data</h4>
+      <div class='capital'>
+          <span class='caption'>Incoming Diaries: </span>:{{getHoverData(info)}}
+      </div>
+  </div>
 </dx-chart>
 <br>
 <br><br>
@@ -385,6 +401,16 @@
   [visualRange]="[0, maximumRange]"
   [customPosition]="0">
 </dxi-value-axis>
+<dxo-tooltip
+        [enabled]="true"
+        contentTemplate="content">
+    </dxo-tooltip>
+    <div *dxTemplate="let info of 'content'" class='state-tooltip'>
+      <h4 class='state'>Tooltip data</h4>
+      <div class='capital'>
+          <span class='caption'>OutGoing Diaries: </span>:{{getHoverData(info)}}
+      </div>
+  </div>
 </dx-chart>
 
 <dx-button class="button-container"

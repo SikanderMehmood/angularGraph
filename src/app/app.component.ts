@@ -100,6 +100,10 @@ export class AppComponent implements OnInit {
     }
   }
 
+  getHoverData(e:any){
+    return e.originalValue;
+  }
+
   onPointClick(e: any) {
 
       if (this.isFirstLevel) {

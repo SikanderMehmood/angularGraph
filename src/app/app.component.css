@@ -49,3 +49,18 @@ background-color: aqua;
   border-bottom: 1px solid rebeccapurple !important;
   
 }
+
+
+::ng-deep .state-tooltip .caption {
+  font-weight: 500;
+}
+
+::ng-deep .state-tooltip sup {
+  font-size: 0.8em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+::ng-deep .state-tooltip .caption {
+  font-weight: 100;
+}
